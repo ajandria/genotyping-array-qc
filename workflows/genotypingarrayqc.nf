@@ -4,12 +4,15 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-include { FASTQC                 } from '../modules/nf-core/fastqc/main'
-include { MULTIQC                } from '../modules/nf-core/multiqc/main'
 include { paramsSummaryMap       } from 'plugin/nf-validation'
 include { paramsSummaryMultiqc   } from '../subworkflows/nf-core/utils_nfcore_pipeline'
 include { softwareVersionsToYAML } from '../subworkflows/nf-core/utils_nfcore_pipeline'
 include { methodsDescriptionText } from '../subworkflows/local/utils_nfcore_genotypingarrayqc_pipeline'
+include { MULTIQC                } from '../modules/nf-core/multiqc/main'
+
+
+include { IDAT_TO_GTC             } from '../modules/local/idat_to_gtc'
+//include { GTC_TO_VCF              } from '../modules/local/gtf_to_vcf/main'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -30,11 +33,10 @@ workflow GENOTYPINGARRAYQC {
     //
     // MODULE: Run FastQC
     //
-    FASTQC (
+    IDAT_TO_GTC (
         ch_samplesheet
     )
-    ch_multiqc_files = ch_multiqc_files.mix(FASTQC.out.zip.collect{it[1]})
-    ch_versions = ch_versions.mix(FASTQC.out.versions.first())
+    ch_gtc_files = IDAT_TO_GTC.out.gtc
 
     //
     // Collate and save software versions

@@ -1,3 +1,17 @@
+# WSPA - Pipeline do uniwersalnej analizy kontroli jakości danych z genotypowania
+
+## Wstepnie zaleznosci
+
+1. https://emea.support.illumina.com/array/array_software/ima-array-analysis-cli.html
+2. https://support.illumina.com/downloads/genome-fasta-files.html
+3. Manifest files  - do pobrania poprzez serwer FTP Illumina lub https://emea.support.illumina.com/array/array_kits/infinium-global-screening-array/downloads.html
+
+
+
+
+
+
+
 <h1>
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="docs/images/nf-core-genotypingarrayqc_logo_dark.png">
