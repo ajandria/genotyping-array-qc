@@ -12,7 +12,7 @@ include { MULTIQC                } from '../modules/nf-core/multiqc/main'
 
 
 include { IDAT_TO_GTC             } from '../modules/local/idat_to_gtc'
-//include { GTC_TO_VCF              } from '../modules/local/gtf_to_vcf/main'
+include { GTC_TO_VCF              } from '../modules/local/gtc_to_vcf/main'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -31,12 +31,20 @@ workflow GENOTYPINGARRAYQC {
     ch_multiqc_files = Channel.empty()
 
     //
-    // MODULE: Run FastQC
+    // MODULE: Run IDAT TO GTC conversion
     //
     IDAT_TO_GTC (
         ch_samplesheet
     )
     ch_gtc_files = IDAT_TO_GTC.out.gtc
+
+    //
+    // MODULE: Run GTC TO VCF conversion
+    //
+    GTC_TO_VCF (
+        ch_gtc_files
+    )
+    ch_vcf_files = GTC_TO_VCF.out.vcf
 
     //
     // Collate and save software versions

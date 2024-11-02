@@ -6,7 +6,7 @@ process IDAT_TO_GTC {
     tuple val(meta), val(idat_dir)
 
     output:
-    tuple val(meta), path("*.gtc"), emit: gtc
+    tuple val(meta), path("."), emit: gtc
 
     when:
     task.ext.when == null || task.ext.when
