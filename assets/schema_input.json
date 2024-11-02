@@ -7,27 +7,20 @@
     "items": {
         "type": "object",
         "properties": {
-            "sample": {
+            "analysis_name": {
                 "type": "string",
                 "pattern": "^\\S+$",
                 "errorMessage": "Sample name must be provided and cannot contain spaces",
                 "meta": ["id"]
             },
-            "idat_grn": {
+            "idat_dir": {
                 "type": "string",
-                "format": "file-path",
+                "format": "directory-path",
                 "exists": true,
-                "pattern": "^\\S+\\.idat$",
-                "errorMessage": "IDAT file for green channel must be provided, cannot contain spaces, and must have extension '.idat'"
-            },
-            "idat_red": {
-                "type": "string",
-                "format": "file-path",
-                "exists": true,
-                "pattern": "^\\S+\\.idat$",
-                "errorMessage": "IDAT file for red channel must be provided, cannot contain spaces, and must have extension '.idat'"
+                "pattern": "^\\S+$",
+                "errorMessage": "IDAT directory path must be provided, cannot contain spaces, and must be a valid directory path"
             }
         },
-        "required": ["sample", "idat_grn", "idat_red"]
+        "required": ["analysis_name", "idat_dir"]
     }
 }

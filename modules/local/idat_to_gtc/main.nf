@@ -3,7 +3,7 @@ process IDAT_TO_GTC {
     label 'process_low'
 
     input:
-    tuple val(meta), path(reads)
+    tuple val(meta), val(idat_dir)
 
     output:
     tuple val(meta), path("*.gtc"), emit: gtc
@@ -14,12 +14,14 @@ process IDAT_TO_GTC {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    bpm_manifest = file("${params.bpm_manifest}")
+    cluster_file = file("${params.cluster_file}")
     """
     ${params.array_analysis_cli}/array-analysis-cli genotype call \
-        --bpm-manifest ${params.bpm_manifest} \
-        --cluster-file ${params.cluster_file} \
+        --bpm-manifest ${bpm_manifest} \
+        --cluster-file ${cluster_file} \
         --output-folder . \
-        --idat-folder batchX/raw \
+        --idat-folder ${idat_dir} \
         --num-threads $task.cpus \
         $args
     """
