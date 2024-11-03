@@ -12,7 +12,9 @@ include { MULTIQC                } from '../modules/nf-core/multiqc/main'
 
 
 include { IDAT_TO_GTC             } from '../modules/local/idat_to_gtc'
-include { GTC_TO_VCF              } from '../modules/local/gtc_to_vcf/main'
+include { GTC_TO_VCF              } from '../modules/local/gtc_to_vcf'
+include { MERGE_VCFS              } from '../modules/local/merge_vcfs'
+include { COMPRESS_INDEX          } from '../modules/local/compress_index'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -45,6 +47,22 @@ workflow GENOTYPINGARRAYQC {
         ch_gtc_files
     )
     ch_vcf_files = GTC_TO_VCF.out.vcf
+        .flatMap()
+
+    //
+    // MODULE: Compress and index VCF files
+    //
+    COMPRESS_INDEX (
+        ch_vcf_files
+    )
+    ch_finalised_vcfs = COMPRESS_INDEX.out.gz_tbi.collect()
+
+    //
+    // MODULE: Merge VCF files
+    //
+    MERGE_VCFS (
+        ch_finalised_vcfs
+    )
 
     //
     // Collate and save software versions

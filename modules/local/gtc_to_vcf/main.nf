@@ -6,7 +6,7 @@ process GTC_TO_VCF {
     tuple val(meta), val(gtc_dir)
 
     output:
-    tuple val(meta), path("."), emit: vcf
+    path("*vcf"), emit: vcf
 
     when:
     task.ext.when == null || task.ext.when
