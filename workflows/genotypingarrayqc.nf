@@ -15,6 +15,7 @@ include { IDAT_TO_GTC             } from '../modules/local/idat_to_gtc'
 include { GTC_TO_VCF              } from '../modules/local/gtc_to_vcf'
 include { MERGE_VCFS              } from '../modules/local/merge_vcfs'
 include { COMPRESS_INDEX          } from '../modules/local/compress_index'
+include { QC_PROCESSES            } from '../modules/local/qc_processes'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -62,6 +63,14 @@ workflow GENOTYPINGARRAYQC {
     //
     MERGE_VCFS (
         ch_finalised_vcfs
+    )
+    ch_merged_vcf = MERGE_VCFS.out.merged_vcf
+
+    //
+    // MODULE: Merge VCF files
+    //
+    QC_PROCESSES (
+        ch_merged_vcf
     )
 
     //
