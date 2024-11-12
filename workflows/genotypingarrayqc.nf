@@ -15,7 +15,9 @@ include { IDAT_TO_GTC             } from '../modules/local/idat_to_gtc'
 include { GTC_TO_VCF              } from '../modules/local/gtc_to_vcf'
 include { MERGE_VCFS              } from '../modules/local/merge_vcfs'
 include { COMPRESS_INDEX          } from '../modules/local/compress_index'
-include { QC_PROCESSES            } from '../modules/local/qc_processes'
+include { INGEST_TO_PLINK         } from '../modules/local/plink/ingest_to_plink'
+include { SPLIT_BY_ANCESTRY       } from '../modules/local/plink/split_by_ancestry'
+
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -69,8 +71,15 @@ workflow GENOTYPINGARRAYQC {
     //
     // MODULE: Merge VCF files
     //
-    QC_PROCESSES (
+    INGEST_TO_PLINK (
         ch_merged_vcf
+    )
+
+    //
+    // MODULE: Split by ancestry
+    //
+    SPLIT_BY_ANCESTRY (
+        INGEST_TO_PLINK.out.ingested_with_plink.collect()
     )
 
     //
