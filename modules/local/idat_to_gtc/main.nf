@@ -16,13 +16,28 @@ process IDAT_TO_GTC {
     def prefix = task.ext.prefix ?: "${meta.id}"
     bpm_manifest = file("${params.bpm_manifest}")
     cluster_file = file("${params.cluster_file}")
-    """
-    ${params.array_analysis_cli}/array-analysis-cli genotype call \
-        --bpm-manifest ${bpm_manifest} \
-        --cluster-file ${cluster_file} \
-        --output-folder . \
-        --idat-folder ${idat_dir} \
-        --num-threads $task.cpus \
-        $args
-    """
+
+    if (params.test_run) {
+        """
+        mkdir GSE196829_test_run
+        ${params.array_analysis_cli}/array-analysis-cli genotype call \
+            --bpm-manifest ${bpm_manifest} \
+            --cluster-file ${cluster_file} \
+            --output-folder . \
+            --idat-folder ${idat_dir} \
+            --num-threads $task.cpus \
+            $args
+        """
+    } else {
+        """
+        ${params.array_analysis_cli}/array-analysis-cli genotype call \
+            --bpm-manifest ${bpm_manifest} \
+            --cluster-file ${cluster_file} \
+            --output-folder . \
+            --idat-folder ${idat_dir} \
+            --num-threads $task.cpus \
+            $args
+        """
+    }
+
 }

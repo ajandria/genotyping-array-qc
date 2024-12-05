@@ -22,6 +22,6 @@ process QC {
     qc.py \\
         --header plink_renamed_merged \\
         --ancestry_file_path ${ancestry_file} \\
-        --pheno_files ${pheno_file}
+        --pheno_files ${pheno_file} > cmd.log 2>&1
     """
 }

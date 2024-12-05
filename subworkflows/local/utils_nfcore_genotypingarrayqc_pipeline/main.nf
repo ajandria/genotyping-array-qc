@@ -80,16 +80,27 @@ workflow PIPELINE_INITIALISATION {
     //
     // Create channel from input file provided through params.input
     //
-    Channel
-        .fromSamplesheet("input")
-        .map {
-            validateInputSamplesheet(it)
-        }
-        .map {
-            meta, idat_dir ->
-                return [ meta, idat_dir ]
-        }
-        .set { ch_samplesheet }
+    if (params.test_run) {
+        Channel
+            .fromSamplesheet("input")
+            .map {
+                meta, idat_dir ->
+                    return [ meta, idat_dir ]
+            }
+            .set { ch_samplesheet }
+    } else {
+        Channel
+            .fromSamplesheet("input")
+            .map {
+                validateInputSamplesheet(it)
+            }
+            .map {
+                meta, idat_dir ->
+                    return [ meta, idat_dir ]
+            }
+            .set { ch_samplesheet }
+    }
+        
 
         ch_samplesheet.view()
 
