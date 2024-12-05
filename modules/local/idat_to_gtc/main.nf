@@ -19,7 +19,8 @@ process IDAT_TO_GTC {
 
     if (params.test_run) {
         """
-        mkdir GSE196829_test_run
+        curl -O https://raw.githubusercontent.com/ajandria/genotyping-array-qc/d4962fb1eff9c62b23e33789f3e772be465997dc/assets/test/GSE196829_tar/GSE196829_test_run.tar.gz
+
         ${params.array_analysis_cli}/array-analysis-cli genotype call \
             --bpm-manifest ${bpm_manifest} \
             --cluster-file ${cluster_file} \
