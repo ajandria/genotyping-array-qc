@@ -7,6 +7,7 @@ process IDAT_TO_GTC {
 
     output:
     tuple val(meta), path("."), emit: gtc
+    path("*"), emit: all
 
     when:
     task.ext.when == null || task.ext.when
